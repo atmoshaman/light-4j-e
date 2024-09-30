@@ -1,2 +1,5 @@
-# light-4j-e
-An extension library for the Light-4j project
+# light-4j-ext
+
+An extension library for the Light-4j project.
+
+The minimum required Java version for this library is Java 11.
