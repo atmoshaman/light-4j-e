@@ -94,12 +94,8 @@ public class CharsetHandler implements MiddlewareHandler {
             return;
         }
 
-        try {
-            if (logger.isDebugEnabled()) logger.debug("CharsetHandler.handleRequest ends.");
-            Handler.next(exchange, next);
-        } catch (Throwable e) {
-            logger.error("Exception:", e);
-        }
+        if (logger.isDebugEnabled()) logger.debug("CharsetHandler.handleRequest ends.");
+        Handler.next(exchange, next);
     }
 
     @Override
