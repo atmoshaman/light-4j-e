@@ -1,0 +1,6 @@
+enabled: true
+charset: ISO-8859-1
+contentTypeList:
+  - text/plain
+  - text/html
+  - application/json
