@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package com.kuibot;
+package com.kuibot.charset;
 
 import com.networknt.config.Config;
 import com.networknt.handler.Handler;

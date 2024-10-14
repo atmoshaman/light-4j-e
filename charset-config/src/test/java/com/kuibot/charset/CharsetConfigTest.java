@@ -1,4 +1,4 @@
-package com.kuibot;
+package com.kuibot.charset;
 
 import org.junit.Assert;
 import org.junit.Before;
