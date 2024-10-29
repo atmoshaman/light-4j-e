@@ -44,8 +44,7 @@ public class CharsetHandler implements MiddlewareHandler {
 
     private volatile HttpHandler next;
 
-    public CharsetHandler() {
-    }
+    public CharsetHandler() {}
 
     private boolean isTextContentType(String contentType) {
         if (config.getContentTypeList() == null) return false;
@@ -59,7 +58,13 @@ public class CharsetHandler implements MiddlewareHandler {
 
     @Override
     public void handleRequest(final HttpServerExchange exchange) throws Exception {
-        if (logger.isDebugEnabled()) logger.debug("CharsetHandler.handleRequest starts.");
+        if (exchange.isInIoThread()) {
+            exchange.dispatch(this);
+            return;
+        }
+
+        String path = exchange.getRequestPath();
+        if(logger.isDebugEnabled()) logger.debug("CharsetHandler starting - path: {}", path);
 
         exchange.addResponseCommitListener(new ResponseCommitListener() {
             @Override
@@ -84,17 +89,13 @@ public class CharsetHandler implements MiddlewareHandler {
                         exchange.getResponseHeaders().put(Headers.CONTENT_TYPE, "text/plain; charset=UTF-8");
                     }
                 } catch (Exception e) {
-                    logger.error("Exception in ResponseCommitListener:", e);
+                    logger.error("CharsetHandler: Exception in ResponseCommitListener:", e);
+                } finally {
+                    if(logger.isDebugEnabled()) logger.debug("CharsetHandler completed - path: {}", path);
                 }
             }
         });
 
-        if (exchange.isInIoThread()) {
-            exchange.dispatch(this);
-            return;
-        }
-
-        if (logger.isDebugEnabled()) logger.debug("CharsetHandler.handleRequest ends.");
         Handler.next(exchange, next);
     }
 
